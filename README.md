@@ -1,70 +1,45 @@
-# Kalkulator Wyrażeń (C++)
+# Kalkulator Wyrażeń (C++) / Expression Calculator (C++)
 
-> Aplikacja konwertująca wyrażenia infiksowe z funkcjami i nawiasami na notację postfiksową, a następnie je obliczająca.
-
----
-
-## 📜 Spis treści
-
-* [Opis projektu](#opis-projektu)
-* [Funkcjonalności](#funkcjonalności)
-* [Technologie i umiejętności](#technologie-i-umiejętności)
-* [Architektura i główne moduły](#architektura-i-główne-moduły)
-* [Przykład użycia](#przykład-użycia)
-* [Autor](#autor)
-* [Licencja](#licencja)
+[English](#english-version) | [Polski](#wersja-polska)
 
 ---
 
-## 📝 Opis projektu
+## English Version
 
-Ten projekt implementuje kalkulator liczb całkowitych, obsługujący:
+### Project Description
 
-* operatory: `+`, `-`, `*`, `/` (dzielenie całkowite, zaokrąglanie w dół, ochrona przed dzieleniem przez 0)
-* funkcje: `IF(a,b,c)`, negacja `N a`, wieloargumentowe `MIN(...)` i `MAX(...)`
-* dowolne nawiasy do zmiany priorytetów
+This C++ program is an integer calculator that:
 
-Wejście: liczba formuł, następnie każda formuła w notacji infiksowej kończąca się `.` i tokenizowana białymi znakami. Wyniki są wyświetlane na standardowym wyjściu, w tym stan stosu przed każdą operacją.
+* Parses infix expressions with operators `+`, `-`, `*`, `/` (integer division, floor, protects against division by zero)
+* Supports functions: `IF(a,b,c)`, unary negation `N a`, variadic `MIN(...)` and `MAX(...)`
+* Uses parentheses to override operator precedence
 
----
+### Features
 
-## ⚙️ Funkcjonalności
+* Conversion from infix to postfix notation (RPN) using the Shunting‑Yard algorithm
+* Evaluation of postfix expressions, printing the stack state before each operation
+* Detection of division by zero: prints `ERROR` and proceeds to the next expression
+* Handling of special functions `IF`, `N`, `MIN`, `MAX`
 
-* **Konwersja**: infiks → postfiks (Reverse Polish Notation) z zachowaniem priorytetów i obsługą funkcji.
-* **Ewaluacja**: obliczanie wyrażenia postfiksowego z wypisywaniem stanu stosu przed wykonaniem każdej operacji.
-* **Obsługa błędów**: wykrywanie dzielenia przez zero, wypisanie `ERROR` i przejście do kolejnej formuły.
-* **Funkcje specjalne**:
+### Technologies and Skills
 
-  * `IF(a,b,c)` – zwraca `b` jeśli `a>0`, w przeciwnym razie `c`.
-  * `N a` – negacja, zwraca `-a`.
-  * `MIN(a1,a2,...)`, `MAX(a1,a2,...)` – zwracają najmniejszy lub największy z argumentów.
+* Standard C++11 without `std::string` (uses fixed-size char arrays)
+* Custom stack implemented as a singly-linked list with manual memory management (`new`/`delete`)
+* Implementation of the Shunting‑Yard algorithm and postfix evaluation
+* Console-based internal logging for debugging
 
----
+### Architecture and Modules
 
-## 🛠 Technologie i umiejętności
+* **tokenType**: represents a token (number, operator, function)
+* **StackNode**: node of the linked-list stack holding a tokenType
+* **Stack module**: operations `push`, `pop`, `show`, `clear`
+* **Conversion module**: token parsing, operator precedence, argument counting, infix→postfix
+* **Evaluation module**: routines `processIf`, `processN`, `processMinMax`, `processOperators`
+* **Main loop**: reads tokens, constructs RPN, runs evaluation
 
-* **Język**: C++ (C++11) bez użycia `std::string` – operacje na tablicach znaków.
-* **Struktury danych**: stos zbudowany na liście jednokierunkowej.
-* **Algorytmy**: algorytm Shunting‑Yard do konwersji wyrażeń.
-* **Zarządzanie pamięcią**: manualne alokacje (`new`/`delete`) i zwalnianie pamięci.
-* **Debug i logging**: wypisywanie stanu wewnętrznych struktur dla śledzenia działania.
+### Example
 
----
-
-## 🏗️ Architektura i główne moduły
-
-* **`tokenType`** – reprezentuje pojedynczy token (liczbę, operator, nazwę funkcji).
-* **`stosElement`** – węzeł stosu, przechowuje `tokenType` i wskaźnik `next`.
-* **Stos** – operacje `push`, `pop`, `show`, `clear`.
-* **Konwersja** – funkcje do rozpoznawania tokenów, priorytetów, zliczania argumentów funkcji i przekształcania infiksu na postfiks.
-* **Ewaluacja** – procedury `processIf`, `processN`, `processMinMax`, `processOperators`, które wykonują obliczenia zgodnie z notacją postfiksową.
-* **Sterowanie** – główna pętla w `main`, czytanie tokenów, budowa RPN, drivery konwersji i ewaluacji.
-
----
-
-## 📋 Przykład użycia
-
-**Wejście**:
+**Input:**
 
 ```
 4
@@ -74,24 +49,76 @@ N 5 * ( 2 + 3 ) .
 IF ( 1 , 10 , 20 ) .
 ```
 
-**Wyjście** (fragment):
+**Output (snippet):**
 
 ```
 100 1 34 2 MAX3 80 MIN2
-MAX3  ...
-34
-...  (kolejne wyniki)
+...
 ```
 
 ---
 
-## 👤 Autor
+## Wersja polska
 
-Igor Tomkowicz
-[LinkedIn](https://www.linkedin.com/in/igor-tomkowicz-a5760b358/) • [GitHub](https://github.com/npnpdev)
+### Opis projektu
+
+Program w C++ będący kalkulatorem liczb całkowitych, który:
+
+* Parsuje wyrażenia infiksowe z operatorami `+`, `-`, `*`, `/` (dzielenie całkowite, zaokrąglanie w dół, ochrona przed dzieleniem przez 0)
+* Obsługuje funkcje: `IF(a,b,c)`, negację `N a`, wieloargumentowe `MIN(...)` i `MAX(...)`
+* Wspiera nawiasy zmieniające kolejność wykonywania operacji
+
+### Funkcjonalności
+
+* Konwersja infiksu na postfiks (RPN) algorytmem Shunting‑Yard
+* Ewaluacja notacji postfiksowej, z wyświetlaniem stanu stosu przed każdą operacją
+* Wykrywanie dzielenia przez zero: wypisanie `ERROR` i przejście do kolejnego wyrażenia
+* Obsługa funkcji `IF`, `N`, `MIN`, `MAX`
+
+### Technologie i umiejętności
+
+* C++11 bez `std::string` (tablice znaków)
+* Własny stos z listy jednokierunkowej, manualne zarządzanie pamięcią (`new`/`delete`)
+* Implementacja algorytmu Shunting‑Yard i ewaluacji RPN
+* Konsolowe logowanie stanu aplikacji (debug)
+
+### Architektura i moduły
+
+* **tokenType**: reprezentuje token (liczbę/operator/funkcję)
+* **stosElement**: węzeł stosu na liście z tokenType
+* **Moduł stosu**: `push`, `pop`, `show`, `clear`
+* **Moduł konwersji**: parsowanie, priorytety, zliczanie argumentów, infiks→postfiks
+* **Moduł ewaluacji**: `processIf`, `processN`, `processMinMax`, `processOperators`
+* **Główna pętla**: odczyt tokenów, konstrukcja RPN, ewaluacja
+
+### Przykład
+
+**Wejście:**
+
+```
+4
+MIN ( 100 , MAX ( 1 , 34 , 2 ) , 80 ) .
+2 + 3 * 4 .
+N 5 * ( 2 + 3 ) .
+IF ( 1 , 10 , 20 ) .
+```
+
+**Wyjście (fragment):**
+
+```
+100 1 34 2 MAX3 80 MIN2
+...
+```
 
 ---
 
-## 📄 Licencja
+## Autor / Author
+
+Igor Tomkowicz
+[LinkedIn](https://www.linkedin.com/in/igor-tomkowicz-a5760b358/) | [GitHub](https://github.com/npnpdev)
+
+---
+
+## Licencja / License
 
 MIT
